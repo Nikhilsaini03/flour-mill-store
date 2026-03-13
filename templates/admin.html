@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+</head>
+
+<body>
+
+<h2>Orders</h2>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align:center;">Admin Dashboard</h2>
+
+<table border="1" width="80%" align="center">
+
+<tr>
+<th>Order ID</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Address</th>
+<th>Total</th>
+</tr>
+
+{% for order in orders %}
+
+<tr>
+
+<td>{{ order[0] }}</td>
+<td>{{ order[1] }}</td>
+<td>{{ order[2] }}</td>
+<td>{{ order[3] }}</td>
+<td>₹{{ order[4] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Your Cart</title>
+
+<style>
+
+body{
+font-family: Arial;
+padding:40px;
+}
+
+table{
+width:80%;
+border-collapse: collapse;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ccc;
+text-align:center;
+}
+
+th{
+background:#f2f2f2;
+}
+
+button{
+padding:6px 12px;
+cursor:pointer;
+}
+
+.actions{
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Your Cart</h2>
+
+<table>
+
+<tr>
+<th>Product</th>
+<th>Price</th>
+<th>Quantity</th>
+<th>Subtotal</th>
+</tr>
+
+{% for item in cart %}
+
+<tr>
+
+<td>{{ item.name }}</td>
+
+<td>₹{{ item.price }}</td>
+
+<td>
+
+<a href="/decrease/{{ item.id }}">-</a>
+
+{{ item.qty }}
+
+<a href="/increase/{{ item.id }}">+</a>
+
+</td>
+
+<td>₹{{ item.subtotal }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<h3>Total: ₹{{ total }}</h3>
+
+<br>
+
+<a href="/products"><button>Back to Products</button></a>
+
+<a href="/checkout">
+<button>Proceed to Checkout</button>
+</a>
+
+{% endblock %}
+
+</div>
+
+</body>
+</html>
