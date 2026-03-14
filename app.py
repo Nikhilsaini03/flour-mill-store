@@ -9,9 +9,10 @@ conn = psycopg2.connect(
     database="flourmill",
     user="flouruser",
     password="IgzNLTYVXB6PohifqAO1KGwZBS8YxWbK",
-    port="5432"
+    port="5432",
+    sslmode="require"
 )
-
+conn.autocommit = True
 cursor = conn.cursor()
 
 
