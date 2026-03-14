@@ -1,17 +1,18 @@
+from django import db
 from flask import Flask, render_template, session, redirect, url_for, request
-import mysql.connector
-
 app = Flask(__name__)
 app.secret_key = "secret"
+import psycopg2
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="1234",
-    database="login_system"
+conn = psycopg2.connect(
+    host="dpg-d6qgdn15pdvs73b9rd40-a.oregon-postgres.render.com",
+    database="flourmill",
+    user="flouruser",
+    password="IgzNLTYVXB6PohifqAO1KGwZBS8YxWbK",
+    port="5432"
 )
 
-cursor = db.cursor()
+cursor = conn.cursor()
 
 
 @app.route("/")
