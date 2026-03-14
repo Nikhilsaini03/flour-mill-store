@@ -7,8 +7,8 @@ app.secret_key = "secret"
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",
-    database="flour_mill"
+    password="1234",
+    database="login_system"
 )
 
 cursor = db.cursor()
