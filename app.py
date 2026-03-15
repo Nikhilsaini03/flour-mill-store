@@ -24,6 +24,7 @@ def products():
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
     cursor.close()
+    print(products)
 
     return render_template("products.html", products=products)
 
