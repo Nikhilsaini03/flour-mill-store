@@ -1,21 +1,8 @@
-from django import db
 from flask import Flask, render_template, session, redirect, url_for, request
+import psycopg2
+
 app = Flask(__name__)
 app.secret_key = "secret"
-import psycopg2
-
-conn = psycopg2.connect(
-    host="dpg-d6qgdn15pdvs73b9rd40-a.oregon-postgres.render.com",
-    database="flourmill",
-    user="flouruser",
-    password="IgzNLTYVXB6PohifqAO1KGwZBS8YxWbK",
-    port="5432",
-    sslmode="require"
-)
-conn.autocommit = True
-cursor = conn.cursor()
-
-import psycopg2
 
 # Database connection
 conn = psycopg2.connect(
@@ -27,36 +14,16 @@ conn = psycopg2.connect(
     sslmode="require"
 )
 
-cursor = conn.cursor()
+conn.autocommit = True
 
-# Create table
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS products (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    price INTEGER,
-    description TEXT,
-    image_url TEXT
-)
-""")
-
-conn.commit()
-cursor.close()
-
-@app.route("/products")
-def products():
-    cursor = conn.cursor()   # ✅ new cursor
-    cursor.execute("SELECT * FROM products")
-    products = cursor.fetchall()
-    cursor.close()
-
-    return render_template("products.html", products=products)
 
 @app.route("/")
 def products():
 
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
+    cursor.close()
 
     return render_template("products.html", products=products)
 
@@ -64,8 +31,10 @@ def products():
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
 
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM products WHERE id=%s",(id,))
     product = cursor.fetchone()
+    cursor.close()
 
     item = {
         "id": product[0],
@@ -120,10 +89,12 @@ def place_order():
     total = 0
     for item in cart_items:
         total += int(item["price"]) * int(item["quantity"])
+        cursor = conn.cursor()
 
     query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
     cursor.execute(query,(name,phone,address,total))
-    db.commit()
+    conn.commit()
+    cursor.close()
 
     session.pop("cart",None)
 
@@ -132,8 +103,10 @@ def place_order():
 @app.route("/admin")
 def admin():
 
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM orders")
     orders = cursor.fetchall()
+    cursor.close()
 
     return render_template("admin.html", orders=orders)
 
