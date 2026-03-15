@@ -14,21 +14,6 @@ conn = psycopg2.connect(
     sslmode="require"
 )
 
-cursor = conn.cursor()
-
-cursor.execute("""
-INSERT INTO products (name,price,description,image_url) VALUES
-('Wheat Atta',30,'Fresh chakki wheat flour','wheat.jpg'),
-('Pearl Atta',40,'Healthy Bajra flour','bajra.jpg'),
-('Corn Atta',80,'Corn flour','corn.webp'),
-('Bran',26,'Wheat bran','bran.jpg');
-""")
-
-conn.commit()
-cursor.close()
-
-print("Products inserted successfully")
-
 conn.autocommit = True
 
 
