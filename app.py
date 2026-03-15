@@ -35,13 +35,23 @@ def products():
 
     return render_template("products.html", products=products)
 
-@app.route("/check-table")
-def check_table():
+@app.route("/add-products")
+def add_products():
+
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products LIMIT 1")
-    print([desc[0] for desc in cursor.description])
+
+    cursor.execute("""
+    INSERT INTO products (name, price, description, image) VALUES
+    ('Wheat Atta',40,'Fresh chakki wheat flour','wheat.jpg'),
+    ('Pearl Atta',50,'Healthy Bajra flour','bajra-atta.png'),
+    ('Corn Atta',80,'Corn flour','corn-flour.webp'),
+    ('Bran',32,'Wheat bran','Bran.jpg')
+    """)
+
+    conn.commit()
     cursor.close()
-    return "Check terminal"
+
+    return "Products Added"
 
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
