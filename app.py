@@ -16,12 +16,6 @@ conn = psycopg2.connect(
 
 cursor = conn.cursor()
 
-cursor.execute("DELETE FROM products WHERE id > 4")
-
-conn.commit()
-cursor.close()
-
-print("Duplicate products removed")
 
 conn.autocommit = True
 
