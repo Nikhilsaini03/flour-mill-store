@@ -21,7 +21,7 @@ cursor = conn.cursor()
 conn.autocommit = True
 
 
-@app.route("/")
+@app.route("/products")
 def products():
 
     cursor = conn.cursor()
