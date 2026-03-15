@@ -126,7 +126,7 @@ def add_product():
 
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO products (name,price,description,image_url) VALUES (%s,%s,%s,%s)",
+        "INSERT INTO products (name,price,description,image) VALUES (%s,%s,%s,%s)",
         (name, price, description, image)
     )
     conn.commit()
