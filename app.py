@@ -41,11 +41,11 @@ def add_products():
     cursor = conn.cursor()
 
     cursor.execute("""
-    INSERT INTO products (name, price, description, image) VALUES
+    INSERT INTO products (name, price, description, image_url) VALUES
     ('Wheat Atta',40,'Fresh chakki wheat flour','wheat.jpg'),
-    ('Pearl Atta',50,'Healthy Bajra flour','bajra-atta.png'),
-    ('Corn Atta',80,'Corn flour','corn-flour.webp'),
-    ('Bran',32,'Wheat bran','Bran.jpg')
+    ('Pearl Atta',50,'Healthy Bajra flour','bajra.jpg'),
+    ('Corn Atta',80,'Corn flour','corn.webp'),
+    ('Bran',32,'Wheat bran','bran.jpg')
     """)
 
     conn.commit()
