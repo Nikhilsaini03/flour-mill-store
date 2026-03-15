@@ -20,6 +20,9 @@ cursor = conn.cursor()
 
 conn.autocommit = True
 
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 @app.route("/products")
 def products():
