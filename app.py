@@ -43,6 +43,14 @@ CREATE TABLE IF NOT EXISTS products (
 conn.commit()
 cursor.close()
 
+@app.route("/products")
+def products():
+    cursor = conn.cursor()   # ✅ new cursor
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+    cursor.close()
+
+    return render_template("products.html", products=products)
 
 @app.route("/")
 def products():
