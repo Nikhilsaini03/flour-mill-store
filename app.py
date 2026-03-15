@@ -13,22 +13,7 @@ conn = psycopg2.connect(
     port="5432",
     sslmode="require"
 )
-cursor = conn.cursor()
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS orders (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    phone VARCHAR(20),
-    address TEXT,
-    total INTEGER
-);
-""")
-
-conn.commit()
-cursor.close()
-
-print("Orders table created")
 
 cursor = conn.cursor()
 
