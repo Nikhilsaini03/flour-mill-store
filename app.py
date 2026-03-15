@@ -110,13 +110,39 @@ def place_order():
 
 @app.route("/admin")
 def admin():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+    cursor.close()
+    return render_template("admin.html", products=products)
+
+
+@app.route("/add_product", methods=["POST"])
+def add_product():
+    name = request.form["name"]
+    price = request.form["price"]
+    description = request.form["description"]
+    image = request.form["image"]
 
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM orders")
-    orders = cursor.fetchall()
+    cursor.execute(
+        "INSERT INTO products (name,price,description,image_url) VALUES (%s,%s,%s,%s)",
+        (name, price, description, image)
+    )
+    conn.commit()
     cursor.close()
 
-    return render_template("admin.html", orders=orders)
+    return redirect("/admin")
+
+
+@app.route("/delete_product/<int:id>")
+def delete_product(id):
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM products WHERE id=%s", (id,))
+    conn.commit()
+    cursor.close()
+
+    return redirect("/admin")
 
 
 app.run(debug=True)

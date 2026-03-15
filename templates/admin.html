@@ -1,28 +1,58 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
 
-{% block content %}
+<style>
+body{font-family:Arial;background:#f4f4f4;padding:40px;}
+table{width:100%;background:white;border-collapse:collapse;}
+th,td{padding:12px;border:1px solid #ddd;text-align:center;}
+button{padding:8px 12px;background:red;color:white;border:none;}
+form{background:white;padding:20px;margin-bottom:30px;}
+input{padding:10px;margin:5px;}
+</style>
 
-<h2 style="text-align:center;">Admin Dashboard</h2>
+</head>
 
-<table border="1" width="80%" align="center">
+<body>
+
+<h2>Add Product</h2>
+
+<form action="/add_product" method="post">
+
+<input type="text" name="name" placeholder="Product Name" required>
+<input type="number" name="price" placeholder="Price" required>
+<input type="text" name="description" placeholder="Description" required>
+<input type="text" name="image" placeholder="Image file name" required>
+
+<button type="submit">Add Product</button>
+
+</form>
+
+
+<h2>Products List</h2>
+
+<table>
 
 <tr>
-<th>Order ID</th>
+<th>ID</th>
 <th>Name</th>
-<th>Phone</th>
-<th>Address</th>
-<th>Total</th>
+<th>Price</th>
+<th>Action</th>
 </tr>
 
-{% for order in orders %}
+{% for p in products %}
 
 <tr>
+<td>{{ p[0] }}</td>
+<td>{{ p[1] }}</td>
+<td>{{ p[2] }}</td>
 
-<td>{{ order[0] }}</td>
-<td>{{ order[1] }}</td>
-<td>{{ order[2] }}</td>
-<td>{{ order[3] }}</td>
-<td>₹{{ order[4] }}</td>
+<td>
+<a href="/delete_product/{{p[0]}}">
+<button>Delete</button>
+</a>
+</td>
 
 </tr>
 
@@ -30,4 +60,5 @@
 
 </table>
 
-{% endblock %}
+</body>
+</html>
