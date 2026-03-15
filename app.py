@@ -34,23 +34,14 @@ def products():
     print(products)
 
     return render_template("products.html", products=products)
-@app.route("/add-products")
-def add_products():
 
+@app.route("/check-table")
+def check_table():
     cursor = conn.cursor()
-
-    cursor.execute("""
-    INSERT INTO products (name, price, description, image) VALUES
-    ('Wheat Atta',40,'Fresh chakki wheat flour','wheat.jpg'),
-    ('Pearl Atta',50,'Healthy Bajra flour','bajra-atta.png'),
-    ('Corn Atta',80,'Corn flour','corn-flour.webp'),
-    ('Bran',32,'Wheat bran','Bran.jpg')
-    """)
-
-    conn.commit()
+    cursor.execute("SELECT * FROM products LIMIT 1")
+    print([desc[0] for desc in cursor.description])
     cursor.close()
-
-    return "Products Added"
+    return "Check terminal"
 
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
@@ -142,7 +133,7 @@ def add_product():
 
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO products (name,price,description,image) VALUES (%s,%s,%s,%s)",
+        "INSERT INTO products (name,price,description,image_url) VALUES (%s,%s,%s,%s)",
         (name, price, description, image)
     )
     conn.commit()
