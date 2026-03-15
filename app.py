@@ -34,7 +34,23 @@ def products():
     print(products)
 
     return render_template("products.html", products=products)
+@app.route("/add-products")
+def add_products():
 
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO products (name, price, description, image) VALUES
+    ('Wheat Atta',40,'Fresh chakki wheat flour','wheat.jpg'),
+    ('Pearl Atta',50,'Healthy Bajra flour','bajra-atta.png'),
+    ('Corn Atta',80,'Corn flour','corn-flour.webp'),
+    ('Bran',32,'Wheat bran','Bran.jpg')
+    """)
+
+    conn.commit()
+    cursor.close()
+
+    return "Products Added"
 
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
