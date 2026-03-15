@@ -15,6 +15,34 @@ conn = psycopg2.connect(
 conn.autocommit = True
 cursor = conn.cursor()
 
+import psycopg2
+
+# Database connection
+conn = psycopg2.connect(
+    host="dpg-d6qgdn15pdvs73b9rd40-a.oregon-postgres.render.com",
+    database="flourmill",
+    user="flouruser",
+    password="IgzNLTYVXB6PohifqAO1KGwZBS8YxWbK",
+    port="5432",
+    sslmode="require"
+)
+
+cursor = conn.cursor()
+
+# Create table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    price INTEGER,
+    description TEXT,
+    image_url TEXT
+)
+""")
+
+conn.commit()
+cursor.close()
+
 
 @app.route("/")
 def products():
