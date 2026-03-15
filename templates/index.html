@@ -1,14 +1,231 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Flour Mill</title>
+<title>Flour Mill Store</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#f3f3f3;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#131921;
+color:white;
+padding:15px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.navbar h2{
+margin:0;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-weight:bold;
+}
+
+/* HERO */
+
+.hero{
+background:url("https://images.unsplash.com/photo-1604908177071-b7fdd3f4c9a1");
+background-size:cover;
+background-position:center;
+height:400px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+text-align:center;
+}
+
+.hero h1{
+font-size:50px;
+margin:0;
+}
+
+.hero p{
+font-size:20px;
+margin:10px 0;
+}
+
+.hero button{
+background:#ff9900;
+border:none;
+padding:15px 25px;
+font-size:18px;
+border-radius:5px;
+cursor:pointer;
+}
+
+/* FEATURES */
+
+.features{
+display:flex;
+justify-content:center;
+gap:40px;
+padding:50px;
+background:white;
+}
+
+.feature-card{
+background:#f7f7f7;
+padding:25px;
+width:250px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.feature-card h3{
+margin-top:10px;
+}
+
+/* PRODUCT PREVIEW */
+
+.preview{
+padding:50px;
+text-align:center;
+}
+
+.preview h2{
+margin-bottom:30px;
+}
+
+.products{
+display:flex;
+justify-content:center;
+gap:30px;
+}
+
+.product{
+background:white;
+padding:20px;
+border-radius:10px;
+width:200px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.product img{
+width:100%;
+border-radius:8px;
+}
+
+.product button{
+margin-top:10px;
+background:#ff9900;
+border:none;
+padding:10px;
+border-radius:5px;
+cursor:pointer;
+}
+
+/* FOOTER */
+
+.footer{
+background:#131921;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>Welcome to BrijMohan Flour Mill</h1>
+<!-- NAVBAR -->
 
-<a href="/products">View Products</a>
+<div class="navbar">
+<h2>Flour Mill Store</h2>
+
+<div>
+<a href="/">Home</a>
+<a href="/products">Products</a>
+<a href="/cart">Cart</a>
+</div>
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<h1>Fresh Chakki Atta</h1>
+
+<p>Pure • Healthy • Direct from Mill</p>
+
+<a href="/products">
+<button>Shop Now</button>
+</a>
+
+</div>
+
+<!-- FEATURES -->
+
+<div class="features">
+
+<div class="feature-card">
+<h3>🌾 Fresh Quality</h3>
+<p>Freshly ground flour from our mill</p>
+</div>
+
+<div class="feature-card">
+<h3>🚚 Fast Delivery</h3>
+<p>Quick delivery in your area</p>
+</div>
+
+<div class="feature-card">
+<h3>💰 Best Price</h3>
+<p>Affordable and genuine pricing</p>
+</div>
+
+</div>
+
+<!-- PRODUCT PREVIEW -->
+
+<div class="preview">
+
+<h2>Popular Products</h2>
+
+<div class="products">
+
+<div class="product">
+<img src="/static/images/wheat.jpg">
+<h4>Wheat Atta</h4>
+</div>
+
+<div class="product">
+<img src="/static/images/bajra.jpg">
+<h4>Bajra Atta</h4>
+</div>
+
+<div class="product">
+<img src="/static/images/corn.webp">
+<h4>Corn Atta</h4>
+</div>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<p>© 2026 Flour Mill Store</p>
+
+</div>
 
 </body>
 </html>
