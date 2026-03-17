@@ -26,7 +26,7 @@ def insert_data():
     cursor = conn.cursor()
 
     cursor.execute("""
-    INSERT INTO products (name, price, description, image) VALUES
+    INSERT INTO products (name, price, description, image_url) VALUES
     ('Wheat Atta', 40, 'Fresh chakki wheat flour', 'wheat.jpg'),
     ('Pearl Atta', 50, 'Healthy Bajra flour', 'bajra.jpg'),
     ('Corn Atta', 80, 'Corn flour', 'corn.webp'),
