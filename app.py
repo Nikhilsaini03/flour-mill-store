@@ -18,29 +18,6 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 conn.autocommit = True
 
-@app.route("/place_order", methods=["POST"])
-def place_order():
-
-    name = request.form["name"]
-    phone = request.form["phone"]
-    address = request.form["address"]
-
-    cart_items = session.get("cart", [])
-
-    total = 0
-    for item in cart_items:
-        total += int(item["price"]) * int(item["quantity"])
-        cursor = conn.cursor()
-
-    query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
-    cursor.execute(query,(name,phone,address,total))
-    conn.commit()
-    cursor.close()
-
-    session.pop("cart",None)
-
-    return "Order Placed Successfully"
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -133,6 +110,28 @@ def remove_item(id):
     return redirect(url_for("cart"))
 
 
+@app.route("/place_order", methods=["POST"])
+def place_order():
+
+    name = request.form["name"]
+    phone = request.form["phone"]
+    address = request.form["address"]
+
+    cart_items = session.get("cart", [])
+
+    total = 0
+    for item in cart_items:
+        total += int(item["price"]) * int(item["quantity"])
+        cursor = conn.cursor()
+
+    query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
+    cursor.execute(query,(name,phone,address,total))
+    conn.commit()
+    cursor.close()
+
+    session.pop("cart",None)
+
+    return "Order Placed Successfully"
 
 @app.route("/admin")
 def admin():
