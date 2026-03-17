@@ -2,42 +2,165 @@
 
 {% block content %}
 
-<h2 style="text-align:center;">Your Cart</h2>
+<style>
 
-<table border="1" width="60%" align="center">
+.cart-container{
+width:80%;
+margin:30px auto;
+}
 
-<tr>
-<th>Product</th>
-<th>Price</th>
-<th>Qty</th>
-<th>Total</th>
-</tr>
+.cart-item{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+flex-wrap:wrap;
+}
+
+.cart-item img{
+width:80px;
+height:80px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.item-info{
+flex:1;
+margin-left:20px;
+}
+
+.item-info h3{
+margin:0;
+}
+
+.price{
+color:green;
+font-weight:bold;
+margin-top:5px;
+}
+
+.qty{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+.qty button{
+padding:5px 10px;
+background:#ff9900;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+.qty button:hover{
+background:#e68a00;
+}
+
+.remove-btn{
+background:red;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:5px;
+cursor:pointer;
+margin-left:10px;
+}
+
+.remove-btn:hover{
+background:darkred;
+}
+
+.total-box{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+text-align:center;
+margin-top:20px;
+}
+
+.checkout-btn{
+background:#ff9900;
+padding:12px 20px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.checkout-btn:hover{
+background:#e68a00;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+.cart-item{
+flex-direction:column;
+align-items:flex-start;
+}
+}
+
+</style>
+
+<div class="cart-container">
+
+<h2>Your Cart 🛒</h2>
+
+{% if cart_items|length == 0 %}
+<p>Your cart is empty 😢</p>
+{% endif %}
 
 {% for item in cart_items %}
 
-<tr>
+<div class="cart-item">
 
-<td>{{ item.name }}</td>
-<td>₹{{ item.price }}</td>
-<td>{{ item.quantity }}</td>
-<td>₹{{ item.price * item.quantity }}</td>
+<img src="{{ url_for('static', filename='images/' + item.image) }}">
 
-</tr>
+<div class="item-info">
+<h3>{{ item.name }}</h3>
+<p class="price">₹{{ item.price }}</p>
+
+<div class="qty">
+
+<a href="/update_quantity/{{ item.id }}/decrease">
+<button>-</button>
+</a>
+
+<p>{{ item.quantity }}</p>
+
+<a href="/update_quantity/{{ item.id }}/increase">
+<button>+</button>
+</a>
+
+<a href="/remove_item/{{ item.id }}">
+<button class="remove-btn">Remove</button>
+</a>
+
+</div>
+
+</div>
+
+</div>
 
 {% endfor %}
 
-</table>
+{% if cart_items|length > 0 %}
+<div class="total-box">
+<h2>Total: ₹{{ total }}</h2>
 
-<br>
-
-<h3 style="text-align:center;">
-Total : ₹{{ total }}
-</h3>
-
-<div style="text-align:center;">
 <a href="/checkout">
-<button>Checkout</button>
+<button class="checkout-btn">Proceed to Checkout</button>
 </a>
+</div>
+{% endif %}
+
 </div>
 
 {% endblock %}

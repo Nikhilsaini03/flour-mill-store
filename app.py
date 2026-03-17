@@ -16,9 +16,30 @@ conn = psycopg2.connect(
 
 
 cursor = conn.cursor()
-
-
 conn.autocommit = True
+
+@app.route("/place_order", methods=["POST"])
+def place_order():
+
+    name = request.form["name"]
+    phone = request.form["phone"]
+    address = request.form["address"]
+
+    cart_items = session.get("cart", [])
+
+    total = 0
+    for item in cart_items:
+        total += int(item["price"]) * int(item["quantity"])
+        cursor = conn.cursor()
+
+    query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
+    cursor.execute(query,(name,phone,address,total))
+    conn.commit()
+    cursor.close()
+
+    session.pop("cart",None)
+
+    return "Order Placed Successfully"
 
 @app.route("/")
 def home():
@@ -58,7 +79,7 @@ def add_to_cart(id):
     session["cart"].append(item)
     session.modified = True
 
-    return redirect(url_for("cart"))
+    return redirect(url_for("products"))
 
 
 @app.route("/cart")
@@ -85,36 +106,50 @@ def checkout():
     return render_template("checkout.html", total=total)
 
 
-@app.route("/place_order", methods=["POST"])
-def place_order():
+@app.route("/update_quantity/<int:id>/<string:action>")
+def update_quantity(id, action):
 
-    name = request.form["name"]
-    phone = request.form["phone"]
-    address = request.form["address"]
+    cart = session.get("cart", [])
 
-    cart_items = session.get("cart", [])
+    for item in cart:
+        if item["id"] == id:
+            if action == "increase":
+                item["quantity"] += 1
+            elif action == "decrease":
+                if item["quantity"] > 1:
+                    item["quantity"] -= 1
 
-    total = 0
-    for item in cart_items:
-        total += int(item["price"]) * int(item["quantity"])
-        cursor = conn.cursor()
+    session["cart"] = cart
+    return redirect(url_for("cart"))
 
-    query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
-    cursor.execute(query,(name,phone,address,total))
-    conn.commit()
-    cursor.close()
+@app.route("/remove_item/<int:id>")
+def remove_item(id):
 
-    session.pop("cart",None)
+    cart = session.get("cart", [])
 
-    return "Order Placed Successfully"
+    cart = [item for item in cart if item["id"] != id]
+
+    session["cart"] = cart
+    return redirect(url_for("cart"))
+
+
 
 @app.route("/admin")
 def admin():
+    if "admin" not in session:
+        return redirect("/login")
+
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
     cursor.close()
+
     return render_template("admin.html", products=products)
+
+@app.route("/logout")
+def logout():
+    session.pop("admin", None)
+    return redirect("/login")
 
 
 @app.route("/add_product", methods=["POST"])
@@ -134,6 +169,21 @@ def add_product():
 
     return redirect("/admin")
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # simple hardcoded login (baad me DB se bhi kar sakte hain)
+        if username == "admin" and password == "1234":
+            session["admin"] = True
+            return redirect("/admin")
+        else:
+            return "Invalid Credentials"
+
+    return render_template("login.html")
+
 
 @app.route("/delete_product/<int:id>")
 def delete_product(id):
@@ -143,6 +193,8 @@ def delete_product(id):
     cursor.close()
 
     return redirect("/admin")
+
+
 
 
 app.run(debug=True)

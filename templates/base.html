@@ -12,19 +12,42 @@ font-family:Arial;
 background:#f5f5f5;
 }
 
+/* NAVBAR */
+
 .navbar{
 background:#131921;
 color:white;
-padding:15px;
+padding:15px 30px;
 display:flex;
 justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
 }
 
-.navbar a{
+.logo{
+font-size:20px;
+color:#ff9900;
+}
+
+.nav-links a{
 color:white;
 text-decoration:none;
 margin-left:20px;
+font-weight:bold;
 }
+
+.nav-links a:hover{
+color:#ff9900;
+}
+
+.search-box{
+padding:8px;
+border-radius:5px;
+border:none;
+width:250px;
+}
+
+/* PRODUCTS */
 
 .products{
 display:flex;
@@ -41,6 +64,11 @@ padding:15px;
 border-radius:10px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.05);
 }
 
 .card img{
@@ -61,6 +89,33 @@ border:none;
 padding:10px 15px;
 border-radius:5px;
 cursor:pointer;
+width:100%;
+}
+
+button:hover{
+background:#e68a00;
+}
+
+/* RATING */
+
+.rating{
+color:orange;
+margin:5px 0;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.navbar{
+flex-direction:column;
+gap:10px;
+}
+
+.search-box{
+width:100%;
+}
+
 }
 
 </style>
@@ -71,13 +126,16 @@ cursor:pointer;
 
 <div class="navbar">
 
-<div>
-<b>Flour Mill Store</b>
+<div class="logo">
+Flour Mill
 </div>
 
-<div>
+<input type="text" id="search" class="search-box" placeholder="Search products..." onkeyup="searchProduct()">
+
+<div class="nav-links">
 <a href="/">Home</a>
-<a href="/cart">Cart</a>
+<a href="/products">Products</a>
+<a href="/cart">Cart (<span id="cart-count">0</span>)</a>
 </div>
 
 </div>
@@ -85,6 +143,38 @@ cursor:pointer;
 {% block content %}
 
 {% endblock %}
+
+<!-- JS -->
+
+<script>
+
+// SEARCH
+function searchProduct(){
+let input = document.getElementById("search").value.toLowerCase();
+let products = document.getElementsByClassName("card");
+
+for(let i=0; i<products.length; i++){
+let name = products[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+
+if(name.includes(input)){
+products[i].style.display = "block";
+}else{
+products[i].style.display = "none";
+}
+}
+}
+
+// CART COUNT
+let count = localStorage.getItem("cartCount") || 0;
+document.getElementById("cart-count").innerText = count;
+
+function addToCart(){
+count++;
+localStorage.setItem("cartCount", count);
+document.getElementById("cart-count").innerText = count;
+}
+
+</script>
 
 </body>
 </html>
