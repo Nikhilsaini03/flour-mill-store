@@ -20,6 +20,24 @@ cursor = conn.cursor()
 
 conn.autocommit = True
 
+
+@app.route("/insert-data")
+def insert_data():
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO products (name, price, description, image) VALUES
+    ('Wheat Atta', 40, 'Fresh chakki wheat flour', 'wheat.jpg'),
+    ('Pearl Atta', 50, 'Healthy Bajra flour', 'bajra.jpg'),
+    ('Corn Atta', 80, 'Corn flour', 'corn.webp'),
+    ('Bran', 32, 'Wheat bran', 'bran.jpg');
+    """)
+
+    conn.commit()
+    cursor.close()
+
+    return "Data Inserted"
+
 @app.route("/")
 def home():
     return render_template("index.html")
