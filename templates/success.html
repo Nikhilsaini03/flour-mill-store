@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Order Successful</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<meta charset="UTF-8">
+<title>Order Successful</title>
 
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            text-align: center;
-            width: 350px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: fadeIn 0.6s ease-in-out;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .checkmark {
-            font-size: 60px;
-            color: green;
-        }
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    width: 350px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 
-        h2 {
-            margin-top: 10px;
-            color: #333;
-        }
+.checkmark {
+    font-size: 60px;
+    color: green;
+}
 
-        p {
-            color: #666;
-        }
+.btn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    display: inline-block;
+}
 
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: black;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            transition: 0.3s;
-        }
+#countdown {
+    color: gray;
+    font-size: 14px;
+    margin-top: 10px;
+}
+</style>
 
-        .btn:hover {
-            background: #333;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
 </head>
 <body>
 
 <div class="container">
     <div class="checkmark">✅</div>
     <h2>Order Placed Successfully</h2>
+
+    <p>Your Order ID: <b>#{{ order_id }}</b></p>
+
     <p>Thank you for shopping with us!</p>
 
     <a href="/products" class="btn">Continue Shopping</a>
+
+    <p id="countdown">Redirecting in 5 seconds...</p>
 </div>
+
+<!-- 🎉 Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+// Confetti burst
+confetti({
+    particleCount: 150,
+    spread: 70,
+    origin: { y: 0.6 }
+});
+
+// Auto redirect
+let time = 5;
+setInterval(() => {
+    time--;
+    document.getElementById("countdown").innerText = "Redirecting in " + time + " seconds...";
+    if(time === 0){
+        window.location.href = "/products";
+    }
+}, 1000);
+</script>
 
 </body>
 </html>

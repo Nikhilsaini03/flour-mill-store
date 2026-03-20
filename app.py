@@ -124,7 +124,7 @@ def place_order():
 
     cart_items = session.get("cart", [])
 
-    #FIX: empty cart check add kiya
+    #FIX: empty cart check
     if not cart_items:
         return "Cart is empty"
 
@@ -132,15 +132,21 @@ def place_order():
     for item in cart_items:
         total += int(item["price"]) * int(item["quantity"])
 
-
+    # Order insert
     query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
-    cursor.execute(query,(name,phone,address,total))
+    cursor.execute(query, (name, phone, address, total))
     conn.commit()
+
+    #FIX: order id fetch
+    cursor.execute("SELECT MAX(id) FROM orders")
+    order_id = cursor.fetchone()[0]
+
     cursor.close()
 
-    session.pop("cart",None)
+    session.pop("cart", None)
 
-    return render_template("success.html")
+    #UPDATED: success page render
+    return render_template("success.html", order_id=order_id)
 
 @app.route("/admin")
 def admin():
