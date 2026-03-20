@@ -14,8 +14,7 @@ conn = psycopg2.connect(
     sslmode="require"
 )
 
-
-cursor = conn.cursor()
+# cursor = conn.cursor()   #FIX: ye remove kiya (global cursor unnecessary)
 conn.autocommit = True
 
 @app.route("/")
@@ -29,7 +28,7 @@ def products():
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
     cursor.close()
-    print(products)
+    # print(products)   #FIX: remove kiya (production me useless)
 
     return render_template("products.html", products=products)
 
@@ -41,6 +40,10 @@ def add_to_cart(id):
     cursor.execute("SELECT * FROM products WHERE id=%s",(id,))
     product = cursor.fetchone()
     cursor.close()
+
+    #FIX: product None check add kiya
+    if not product:
+        return "Product not found"
 
     item = {
         "id": product[0],
@@ -113,16 +116,22 @@ def remove_item(id):
 @app.route("/place_order", methods=["POST"])
 def place_order():
 
+    cursor = conn.cursor()
+
     name = request.form["name"]
     phone = request.form["phone"]
     address = request.form["address"]
 
     cart_items = session.get("cart", [])
 
+    #FIX: empty cart check add kiya
+    if not cart_items:
+        return "Cart is empty"
+
     total = 0
     for item in cart_items:
         total += int(item["price"]) * int(item["quantity"])
-        cursor = conn.cursor()
+
 
     query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
     cursor.execute(query,(name,phone,address,total))
@@ -131,7 +140,7 @@ def place_order():
 
     session.pop("cart",None)
 
-    return "Order Placed Successfully"
+    return render_template("success.html")
 
 @app.route("/admin")
 def admin():
@@ -193,4 +202,4 @@ def delete_product(id):
 
     return redirect("/admin")
 
-app.run(debug=True)
+app.run(debug=True)  #UPDATED: live karte time debug=False kar dena
