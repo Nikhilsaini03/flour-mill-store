@@ -116,6 +116,8 @@ def remove_item(id):
 @app.route("/place_order", methods=["POST"])
 def place_order():
 
+    import urllib.parse
+
     cursor = conn.cursor()
 
     name = request.form["name"]
@@ -124,7 +126,6 @@ def place_order():
 
     cart_items = session.get("cart", [])
 
-    #FIX: empty cart check
     if not cart_items:
         return "Cart is empty"
 
@@ -132,33 +133,33 @@ def place_order():
     for item in cart_items:
         total += int(item["price"]) * int(item["quantity"])
 
-    # Order insert
     query = "INSERT INTO orders (name,phone,address,total) VALUES (%s,%s,%s,%s)"
     cursor.execute(query, (name, phone, address, total))
     conn.commit()
 
-    #FIX: order id fetch
+    # Order ID
     cursor.execute("SELECT MAX(id) FROM orders")
     order_id = cursor.fetchone()[0]
 
-    cursor.close()
+    # WhatsApp message
+    message = f"""
+New Order Received!
 
+Order ID: {order_id}
+Name: {name}
+Phone: {phone}
+Address: {address}
+Total: ₹{total}
+"""
+
+    encoded_message = urllib.parse.quote(message)
+
+    whatsapp_url = f"https://wa.me/917505707414?text={encoded_message}"
+
+    cursor.close()
     session.pop("cart", None)
 
-    #UPDATED: success page render
-    return render_template("success.html", order_id=order_id)
-
-@app.route("/admin")
-def admin():
-    if "admin" not in session:
-        return redirect("/login")
-
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products")
-    products = cursor.fetchall()
-    cursor.close()
-
-    return render_template("admin.html", products=products)
+    return render_template("success.html", order_id=order_id, whatsapp_url=whatsapp_url)
 
 @app.route("/logout")
 def logout():
@@ -208,4 +209,19 @@ def delete_product(id):
 
     return redirect("/admin")
 
-app.run(debug=True)  #UPDATED: live karte time debug=False kar dena
+@app.route("/admin/orders")
+def admin_orders():
+    if "admin" not in session:
+        return redirect("/login")
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM orders ORDER BY id DESC")
+    orders = cursor.fetchall()
+    cursor.close()
+
+    return render_template("admin_orders.html", orders=orders)
+
+
+
+if __name__ == "__main__":
+    app.run()

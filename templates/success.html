@@ -30,19 +30,21 @@ body {
 }
 
 .btn {
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 12px 25px;
-    background: black;
-    color: white;
     text-decoration: none;
     border-radius: 6px;
-    display: inline-block;
+    display: block;
 }
 
-#countdown {
-    color: gray;
-    font-size: 14px;
-    margin-top: 10px;
+.whatsapp {
+    background: #25D366;
+    color: white;
+}
+
+.shop {
+    background: black;
+    color: white;
 }
 </style>
 
@@ -55,34 +57,14 @@ body {
 
     <p>Your Order ID: <b>#{{ order_id }}</b></p>
 
-    <p>Thank you for shopping with us!</p>
+    <p>Click below to send order on WhatsApp</p>
 
-    <a href="/products" class="btn">Continue Shopping</a>
+    <!-- WhatsApp Button -->
+    <a href="{{ whatsapp_url }}" class="btn whatsapp">Send on WhatsApp</a>
 
-    <p id="countdown">Redirecting in 5 seconds...</p>
+    <!-- Continue Shopping -->
+    <a href="/products" class="btn shop">Continue Shopping</a>
 </div>
-
-<!-- 🎉 Confetti -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<script>
-// Confetti burst
-confetti({
-    particleCount: 150,
-    spread: 70,
-    origin: { y: 0.6 }
-});
-
-// Auto redirect
-let time = 5;
-setInterval(() => {
-    time--;
-    document.getElementById("countdown").innerText = "Redirecting in " + time + " seconds...";
-    if(time === 0){
-        window.location.href = "/products";
-    }
-}, 1000);
-</script>
 
 </body>
 </html>
