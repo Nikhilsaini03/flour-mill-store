@@ -193,7 +193,4 @@ def delete_product(id):
 
     return redirect("/admin")
 
-
-
-
 app.run(debug=True)
