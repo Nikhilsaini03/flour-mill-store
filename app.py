@@ -5,17 +5,20 @@ app = Flask(__name__)
 app.secret_key = "secret"
 
 # Database connection
+import psycopg2
+
 conn = psycopg2.connect(
-    host="dpg-d6qgdn15pdvs73b9rd40-a.oregon-postgres.render.com",
-    database="flourmill",
-    user="flouruser",
-    password="IgzNLTYVXB6PohifqAO1KGwZBS8YxWbK",
-    port="5432",
-    sslmode="require"
+    host="dpg-d8hti7mq1p3s73e2t1cg-a",
+    database="flourmill_sh6a",
+    user="flourmill_sh6a_user",
+    password="JAbBJjY2WBALy9W4ESQc7li701yRddap",
+    port="5432"
 )
 
-# cursor = conn.cursor()   #FIX: ye remove kiya (global cursor unnecessary)
 conn.autocommit = True
+cursor = conn.cursor()
+
+print("Database connected")
 
 @app.route("/")
 def home():
